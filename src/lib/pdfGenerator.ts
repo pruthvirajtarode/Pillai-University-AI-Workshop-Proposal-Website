@@ -300,44 +300,71 @@ export function generateProposalPDF() {
 }
 
 /* ═══════════════════════════════════════════════════════
-   PITCH PDF
+   PITCH PDF (PERSONALIZED FOR MR. GOPALKRISHNAN)
 ═══════════════════════════════════════════════════════ */
 export function generatePitchPDF() {
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
 
-  addHeader(doc, 'Pitch Presentation — Executive Summary');
+  addHeader(doc, 'Executive Pitch Report');
 
   let y = 52;
   doc.setFontSize(24);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(...DARK_NAVY);
   doc.text('AI Workshop Pitch', 14, y);
+  
   doc.setFontSize(13);
   doc.setTextColor(...PILLAI_RED);
-  doc.text('For Pillai University Leadership', 14, y + 10);
-  y += 28;
+  doc.text('Prepared Exclusively For: Mr. Gopalkrishnan & Leadership', 14, y + 10);
+  
+  doc.setFontSize(11);
+  doc.setTextColor(...MID_GRAY);
+  doc.setFont('helvetica', 'italic');
+  doc.text('A Vision for Pillai University, Navi Mumbai', 14, y + 16);
+  y += 32;
 
-  y = addSectionHeading(doc, 'The Opportunity', y);
-  y = addBodyText(doc, 'AI literacy is rapidly becoming as essential as digital literacy was a decade ago. Universities that equip their students with practical AI skills today will produce graduates who are significantly more competitive in the job market.', 14, y);
-  y += 6;
+  // Personalized Letter/Intro
+  doc.setFillColor(...LIGHT_GRAY);
+  doc.roundedRect(14, y, 182, 38, 4, 4, 'F');
+  doc.setFillColor(...PILLAI_RED);
+  doc.roundedRect(14, y, 3, 38, 4, 4, 'F');
+  
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
+  doc.setTextColor(...DARK_NAVY);
+  doc.text('Dear Mr. Gopalkrishnan,', 22, y + 8);
+  
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(55, 65, 81);
+  const letterText = "With 12,000 to 15,000 students across Pillai University's Navi Mumbai campus, the scale of opportunity is massive. If we can equip your students with foundational AI literacy today, we aren't just teaching them a new software tool—we are fundamentally upgrading the employability, productivity, and innovative capacity of the entire student body.";
+  const letterLines = doc.splitTextToSize(letterText, 168) as string[];
+  doc.text(letterLines, 22, y + 14);
+  y += 48;
 
-  y = addSectionHeading(doc, 'The Proposed Solution', y);
-  y = addBodyText(doc, 'A focused, one-day "AI Foundation & Generative AI Workshop" for Pillai University students — beginner-friendly, interdisciplinary, and 100% hands-on. Students leave with real skills, not just theory.', 14, y);
-  y += 6;
-
-  y = addSectionHeading(doc, 'Who Is This For?', y);
-  ["Engineering — debug code, generate API docs, research IoT architecture", "Business — run Porter's 5 Forces, financial models, VC pitch decks", "Architecture & Design — generate moodboards, structural concepts", "Computer Applications — write React components from UI screenshots", "ALL students — rewrite resumes to match JDs, 1-page study sheets"].forEach(item => {
+  y = addSectionHeading(doc, 'The Opportunity at Scale', y);
+  y = addBodyText(doc, 'Imagine the impact across 15,000 students:', 14, y);
+  y += 4;
+  [
+    'Engineering: Faster debugging, automated documentation, IoT data synthesis.',
+    'Business: Instant financial modeling, competitor analysis, and pitch generation.',
+    'Architecture: AI-assisted moodboarding, structural concept visualization.',
+    'Campus-wide: Students saving 5+ hours weekly on research and drafting.',
+  ].forEach(item => {
     y = addBullet(doc, item, 14, y);
   });
   y += 6;
 
-  y = addSectionHeading(doc, 'Format & Logistics', y);
+  y = addSectionHeading(doc, 'The Proposed Solution', y);
+  y = addBodyText(doc, 'A highly focused, one-day "AI Foundation & Generative AI Workshop" designed for Pillai University. It is beginner-friendly, interdisciplinary, and 100% hands-on. Students leave with real, actionable skills.', 14, y);
+  y += 6;
+
+  y = addSectionHeading(doc, 'Workshop Format', y);
   [
     ['Duration', '7–8 Hours (One Full Day)'],
-    ['Level', 'Absolute Beginner — No Prior AI Knowledge Required'],
-    ['Approach', 'Lecture + Live Demo + Hands-On Activities'],
-    ['Deliverable', 'AI Starter Kit for every student'],
-    ['Certificate', 'Certificate of Participation'],
+    ['Audience', 'All 15,000+ Students (Scalable Batch-wise)'],
+    ['Approach', 'Lecture + Live Campus-Specific Demo + Hands-On Activities'],
+    ['Deliverable', 'Pillai AI Starter Kit for every student'],
   ].forEach(([label, value]) => {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10);
@@ -350,36 +377,26 @@ export function generatePitchPDF() {
   });
   y += 4;
 
-  y = addSectionHeading(doc, 'What Makes This Workshop Different?', y);
-  ['Beginner-first: No prior AI expertise required.', 'Practical: Students learn by doing, not just listening.', 'Interdisciplinary: Relevant examples for every school.', 'Career-oriented: Connects AI skills with employability.', 'Responsible: Includes ethics, verification, and integrity.', 'High-impact: Designed for maximum value in a single day.'].forEach(item => {
-    y = addBullet(doc, item, 14, y);
-  });
-  y += 6;
-
-  y = addSectionHeading(doc, 'Student Outcomes', y);
-  y = addBodyText(doc, 'Every student finishes the workshop thinking:', 14, y);
-  y += 3;
+  y = addSectionHeading(doc, 'What Makes This Different?', y);
   [
-    '"I understand what AI is."',
-    '"I know how to use AI."',
-    '"I know how to ask AI better questions."',
-    '"I know where AI can help me in my studies and career."',
-    '"I know what AI cannot reliably do."',
-    '"I can start using AI responsibly today."',
+    'Tailored to Navi Mumbai: Relevant local and academic examples.',
+    'Interdisciplinary: Not just for CS students; designed for every school.',
+    'Ethical Framework: Embedding academic integrity and data privacy.',
+    'Immediate ROI: Students can use these skills the very next day.',
   ].forEach(item => {
     y = addBullet(doc, item, 14, y);
   });
-  y += 10;
+  y += 12;
 
   doc.setFillColor(...PILLAI_RED);
   doc.roundedRect(14, y, 182, 30, 4, 4, 'F');
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(...WHITE);
-  doc.text('"Every student should understand AI."', 14 + 91, y + 10, { align: 'center' });
+  doc.text('"Empowering Pillai University\'s 15,000 minds with AI."', 14 + 91, y + 12, { align: 'center' });
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.text('Contact: +91 881 882 8837  |  info@pillai.edu.in', 14 + 91, y + 22, { align: 'center' });
+  doc.text('Let\'s build the future together.', 14 + 91, y + 20, { align: 'center' });
 
   const totalPages = doc.getNumberOfPages();
   for (let p = 1; p <= totalPages; p++) {
@@ -387,7 +404,7 @@ export function generatePitchPDF() {
     addFooter(doc, p, totalPages);
   }
 
-  doc.save('Pillai_University_AI_Workshop_Pitch.pdf');
+  doc.save('Pillai_University_AI_Pitch_For_Mr_Gopalkrishnan.pdf');
 }
 
 /* ═══════════════════════════════════════════════════════
