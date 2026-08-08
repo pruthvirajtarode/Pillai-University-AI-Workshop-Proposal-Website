@@ -12,19 +12,19 @@ export const workshopData = {
   schools: [
     {
       title: "Engineering",
-      description: "Enhance technical research, automate debugging, draft documentation, and generate code with AI."
+      description: "Debug 500 lines of spaghetti code in seconds, generate complete API documentation, and research the latest papers on IoT architecture."
     },
     {
       title: "Business",
-      description: "Accelerate market research, analyze case studies, optimize business presentations, and draft professional emails."
+      description: "Instantly run a Porter's 5 Forces analysis on any competitor, generate financial forecast models, and draft VC-ready pitch decks."
     },
     {
       title: "Architecture & Design",
-      description: "Ideate concepts rapidly, create moodboards, direct visual narratives, and streamline design research."
+      description: "Generate 20 unique moodboards from a single sentence, explore surreal structural concepts, and automate 3D texture mapping research."
     },
     {
       title: "Computer Applications",
-      description: "Assist with coding, database structuring, web development planning, and exploring new AI application ideas."
+      description: "Write full React components from a screenshot, optimize database queries for scale, and build custom AI-wrapper micro-apps."
     }
   ],
   modules: [

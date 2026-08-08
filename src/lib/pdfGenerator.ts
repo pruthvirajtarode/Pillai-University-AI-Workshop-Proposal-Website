@@ -326,7 +326,7 @@ export function generatePitchPDF() {
   y += 6;
 
   y = addSectionHeading(doc, 'Who Is This For?', y);
-  ['Engineering students — technical research, coding, documentation', 'Business students — research, analysis, emails, presentations', 'Architecture & Design students — ideation, concepts, design research', 'Computer Applications — coding, debugging, web, AI applications', 'ALL students — studying, research, career prep, communication'].forEach(item => {
+  ["Engineering — debug code, generate API docs, research IoT architecture", "Business — run Porter's 5 Forces, financial models, VC pitch decks", "Architecture & Design — generate moodboards, structural concepts", "Computer Applications — write React components from UI screenshots", "ALL students — rewrite resumes to match JDs, 1-page study sheets"].forEach(item => {
     y = addBullet(doc, item, 14, y);
   });
   y += 6;
