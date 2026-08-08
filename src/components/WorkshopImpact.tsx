@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Target, TrendingUp, ShieldCheck, Zap, Briefcase, GraduationCap, CheckCircle2 } from 'lucide-react';
+import { Target, ShieldCheck, Zap, Briefcase, CheckCircle2 } from 'lucide-react';
 
 const coreOutcomes = [
   "Better Productivity", "Better Research", "Better Communication", 
