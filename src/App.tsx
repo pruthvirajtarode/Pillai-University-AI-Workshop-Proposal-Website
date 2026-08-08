@@ -13,8 +13,10 @@ import { ResponsibleAI } from './components/ResponsibleAI';
 import { LearningOutcomes } from './components/LearningOutcomes';
 import { TakeawayKit } from './components/TakeawayKit';
 import { WorkshopImpact } from './components/WorkshopImpact';
+import { ProposalDownload } from './components/ProposalDownload';
 import { FinalCTA } from './components/FinalCTA';
 import { Footer } from './components/Footer';
+import { ScrollToTop } from './components/ScrollToTop';
 
 function App() {
   return (
@@ -35,9 +37,11 @@ function App() {
         <LearningOutcomes />
         <TakeawayKit />
         <WorkshopImpact />
+        <ProposalDownload />
         <FinalCTA />
       </main>
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }
