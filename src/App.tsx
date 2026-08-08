@@ -7,7 +7,7 @@ import { Curriculum } from './components/Curriculum';
 import { WorkshopAgenda } from './components/WorkshopAgenda';
 import { InteractivePromptDemo } from './components/InteractivePromptDemo';
 import { ToolsPlayground } from './components/ToolsPlayground';
-import { DisciplineUseCases } from './components/DisciplineUseCases';
+import { StudentSuperpowers } from './components/StudentSuperpowers';
 import { HandsOnActivities } from './components/HandsOnActivities';
 import { ResponsibleAI } from './components/ResponsibleAI';
 import { LearningOutcomes } from './components/LearningOutcomes';
@@ -31,7 +31,7 @@ function App() {
         <InteractivePromptDemo />
         <WorkshopAgenda />
         <ToolsPlayground />
-        <DisciplineUseCases />
+        <StudentSuperpowers />
         <HandsOnActivities />
         <ResponsibleAI />
         <LearningOutcomes />

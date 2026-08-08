@@ -8,7 +8,7 @@ const navLinks = [
   { name: 'Curriculum', href: '#curriculum' },
   { name: 'Agenda', href: '#agenda' },
   { name: 'Tools', href: '#tools' },
-  { name: 'Use Cases', href: '#use-cases' },
+  { name: 'Superpowers', href: '#superpowers' },
   { name: 'Activities', href: '#activities' },
   { name: 'Outcomes', href: '#outcomes' },
   { name: 'Proposal', href: '#proposal' },
