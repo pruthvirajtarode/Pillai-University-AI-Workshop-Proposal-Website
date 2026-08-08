@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { cn } from '../lib/utils';
-import { Lightbulb, Cpu, GitBranch, Wand2, MessageSquare, Wrench, BookOpen, ShieldCheck, Trophy } from 'lucide-react';
+import { Lightbulb, Cpu, GitBranch, Wand2, MessageSquare, Wrench, BookOpen, ShieldCheck, Trophy, ArrowRight, ArrowLeft } from 'lucide-react';
 
 const journeyStages = [
   {
@@ -146,49 +146,72 @@ export function AIJourney() {
   const active = journeyStages[activeStage];
 
   return (
-    <section id="ai-journey" aria-labelledby="ai-journey-heading" className="py-24 bg-pillai-light">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+    <section id="ai-journey" aria-labelledby="ai-journey-heading" className="py-24 bg-pillai-light relative overflow-hidden">
+      {/* Decorative blobs */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-pillai-primary/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-pillai-accent/10 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.h2
             id="ai-journey-heading"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-extrabold text-pillai-dark mb-6"
+            className="text-4xl md:text-5xl font-extrabold text-pillai-dark mb-6 tracking-tight"
           >
-            The Student <span className="text-pillai-primary">AI Journey</span>
+            The Student <span className="text-gradient">AI Journey</span>
           </motion.h2>
           <p className="text-lg text-gray-600">
             A step-by-step foundation. We start from absolute basics — no programming knowledge required. Click any stage to explore.
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-10">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
           {/* ── Selector ── */}
           <nav
             aria-label="AI Journey stages"
-            className="w-full lg:w-2/5 xl:w-1/3 relative"
+            className="w-full lg:w-[400px] relative"
           >
-            <div className="absolute inset-y-0 left-7 w-px bg-gray-200 hidden lg:block" />
-            <div className="grid grid-cols-3 gap-2 lg:flex lg:flex-col lg:gap-0">
+            {/* Desktop Connected Line */}
+            <div className="absolute inset-y-0 left-7 w-1 bg-gray-200 hidden lg:block rounded-full">
+              {/* Active Progress Fill */}
+              <motion.div 
+                className="absolute top-0 left-0 w-full bg-gradient-to-b from-pillai-primary to-pillai-accent rounded-full origin-top"
+                initial={{ scaleY: 0 }}
+                animate={{ scaleY: (activeStage + 1) / journeyStages.length }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 lg:flex lg:flex-col lg:gap-0 relative z-10">
               {journeyStages.map((stage, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveStage(idx)}
                   aria-pressed={activeStage === idx}
                   className={cn(
-                    "relative flex flex-col lg:flex-row items-center lg:items-center gap-2 lg:gap-4 p-3 lg:p-4 text-center lg:text-left rounded-xl lg:rounded-none transition-all group",
+                    "relative flex flex-col lg:flex-row items-center lg:items-center gap-3 lg:gap-6 p-4 lg:p-5 text-center lg:text-left rounded-2xl lg:rounded-none transition-all group",
                     activeStage === idx
-                      ? "lg:bg-transparent bg-pillai-primary/5"
-                      : "opacity-60 hover:opacity-100"
+                      ? "lg:bg-transparent bg-white shadow-md lg:shadow-none"
+                      : "opacity-60 hover:opacity-100 hover:bg-white/50 lg:hover:bg-transparent"
                   )}
                 >
+                  {/* Sliding Background for Desktop */}
+                  {activeStage === idx && (
+                    <motion.div
+                      layoutId="activeStageBg"
+                      className="hidden lg:block absolute inset-0 bg-white rounded-2xl shadow-sm border border-gray-100 -z-10"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+
                   {/* Timeline dot — desktop only */}
                   <div className={cn(
-                    "hidden lg:flex w-14 h-14 rounded-full shrink-0 items-center justify-center border-4 z-10 transition-all duration-300",
+                    "hidden lg:flex w-14 h-14 rounded-full shrink-0 items-center justify-center border-4 transition-all duration-300 relative z-10",
                     activeStage === idx
-                      ? "bg-pillai-primary border-pillai-light text-white scale-110"
-                      : "bg-white border-gray-100 text-gray-400 group-hover:border-gray-200"
+                      ? "bg-pillai-primary border-pillai-primary/20 text-white shadow-[0_0_20px_rgba(158,27,35,0.4)] scale-110"
+                      : "bg-white border-gray-200 text-gray-400 group-hover:border-pillai-primary/50"
                   )}>
                     <div className={activeStage === idx ? "text-white" : stage.color}>
                       {stage.icon}
@@ -197,18 +220,18 @@ export function AIJourney() {
 
                   {/* Mobile circle */}
                   <div className={cn(
-                    "lg:hidden w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all shrink-0",
+                    "lg:hidden w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all shrink-0 shadow-sm",
                     activeStage === idx
                       ? "bg-pillai-primary border-pillai-primary text-white"
-                      : "bg-gray-100 border-gray-200 text-gray-500"
+                      : "bg-white border-gray-200 text-gray-500"
                   )}>
                     {stage.icon}
                   </div>
 
                   <div className="min-w-0">
-                    <span className="block text-xs font-bold text-gray-400 mb-0.5">{stage.step}</span>
+                    <span className="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-widest">Stage {stage.step}</span>
                     <span className={cn(
-                      "font-bold text-xs md:text-sm leading-tight transition-colors",
+                      "font-extrabold text-sm md:text-base leading-tight transition-colors",
                       activeStage === idx ? "text-pillai-primary" : "text-gray-700"
                     )}>
                       {stage.title}
@@ -220,61 +243,75 @@ export function AIJourney() {
           </nav>
 
           {/* ── Detail Panel ── */}
-          <div className="flex-1 min-w-0">
-            <motion.div
-              key={activeStage}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35 }}
-              className="bg-white rounded-3xl p-8 md:p-10 shadow-xl border border-gray-100 h-full"
-            >
-              {/* Stage header */}
-              <div className={cn("inline-flex items-center gap-3 px-4 py-2 rounded-full mb-6 border text-sm font-bold", active.bg, active.border, active.color)}>
-                {active.icon}
-                Stage {active.step}
-              </div>
+          <div className="flex-1 min-w-0 relative">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStage}
+                initial={{ opacity: 0, x: 20, filter: "blur(4px)" }}
+                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, x: -20, filter: "blur(4px)" }}
+                transition={{ duration: 0.3 }}
+                className="bg-white rounded-[2rem] p-8 md:p-12 shadow-xl border border-gray-100 h-full flex flex-col"
+              >
+                {/* Stage header */}
+                <div className={cn("inline-flex items-center gap-3 px-5 py-2.5 rounded-full mb-8 border text-sm font-bold shadow-sm w-fit", active.bg, active.border, active.color)}>
+                  {active.icon}
+                  Stage {active.step}
+                </div>
 
-              <h3 className="text-2xl md:text-3xl font-extrabold text-pillai-dark mb-3">
-                {active.title}
-              </h3>
-              <p className="text-gray-500 mb-8 text-base">{active.desc}</p>
+                <h3 className="text-3xl md:text-4xl font-extrabold text-pillai-dark mb-4 tracking-tight">
+                  {active.title}
+                </h3>
+                <p className="text-gray-500 mb-10 text-lg leading-relaxed">{active.desc}</p>
 
-              <ul className="space-y-4">
-                {active.details.map((point, i) => (
-                  <motion.li
-                    key={i}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.08 }}
-                    className="flex items-start gap-4 bg-gray-50 rounded-xl p-4 border border-gray-100"
+                <ul className="space-y-4 flex-1">
+                  {active.details.map((point, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 + (i * 0.1) }}
+                      className="flex items-start gap-4 p-5 rounded-2xl bg-gray-50/80 border border-gray-100 hover:bg-gray-50 transition-colors"
+                    >
+                      <span className={cn("shrink-0 mt-0.5 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border shadow-sm", active.bg, active.border, active.color)}>
+                        {i + 1}
+                      </span>
+                      <span className="text-gray-700 text-base leading-relaxed">{point}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+
+                {/* Navigation buttons */}
+                <div className="flex items-center justify-between mt-10 pt-8 border-t border-gray-100">
+                  <button
+                    onClick={() => setActiveStage(prev => Math.max(0, prev - 1))}
+                    disabled={activeStage === 0}
+                    className="flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-pillai-primary disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:-translate-x-1"
                   >
-                    <span className={cn("shrink-0 mt-0.5 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold border", active.bg, active.border, active.color)}>
-                      {i + 1}
-                    </span>
-                    <span className="text-gray-700 text-sm leading-relaxed">{point}</span>
-                  </motion.li>
-                ))}
-              </ul>
+                    <ArrowLeft className="w-4 h-4" /> Previous
+                  </button>
+                  
+                  {/* Dots indicator for mobile */}
+                  <div className="flex gap-1.5 lg:hidden">
+                    {journeyStages.map((_, i) => (
+                      <div key={i} className={`h-1.5 rounded-full transition-all ${activeStage === i ? 'w-4 bg-pillai-primary' : 'w-1.5 bg-gray-200'}`} />
+                    ))}
+                  </div>
 
-              {/* Navigation buttons */}
-              <div className="flex justify-between mt-8 pt-6 border-t border-gray-100">
-                <button
-                  onClick={() => setActiveStage(prev => Math.max(0, prev - 1))}
-                  disabled={activeStage === 0}
-                  className="text-sm font-semibold text-gray-500 hover:text-pillai-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                >
-                  ← Previous
-                </button>
-                <span className="text-sm text-gray-400">{activeStage + 1} / {journeyStages.length}</span>
-                <button
-                  onClick={() => setActiveStage(prev => Math.min(journeyStages.length - 1, prev + 1))}
-                  disabled={activeStage === journeyStages.length - 1}
-                  className="text-sm font-semibold text-gray-500 hover:text-pillai-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                >
-                  Next →
-                </button>
-              </div>
-            </motion.div>
+                  <span className="hidden lg:block text-sm font-bold text-gray-400 bg-gray-50 px-4 py-2 rounded-full">
+                    {activeStage + 1} of {journeyStages.length}
+                  </span>
+
+                  <button
+                    onClick={() => setActiveStage(prev => Math.min(journeyStages.length - 1, prev + 1))}
+                    disabled={activeStage === journeyStages.length - 1}
+                    className="flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-pillai-primary disabled:opacity-30 disabled:cursor-not-allowed transition-all hover:translate-x-1"
+                  >
+                    Next <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>

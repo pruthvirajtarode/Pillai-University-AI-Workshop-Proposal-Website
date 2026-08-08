@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Calendar, Clock, Users, Sparkles, ChevronDown } from 'lucide-react';
+import { useRef } from 'react';
 
 const badges = [
   { icon: <Clock className="w-4 h-4" />, text: "7–8 HOURS" },
@@ -9,143 +10,207 @@ const badges = [
 ];
 
 const floatingStats = [
-  { label: "Years Legacy", value: "50+" },
-  { label: "Placement Rate", value: "95%" },
-  { label: "Recruiters", value: "300+" },
-  { label: "Industry Partners", value: "50+" },
+  { label: "Years Legacy", value: "50+", delay: 0 },
+  { label: "Placement Rate", value: "95%", delay: 0.2 },
+  { label: "Recruiters", value: "300+", delay: 0.4 },
+  { label: "Industry Partners", value: "50+", delay: 0.6 },
 ];
 
 export function Hero() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
   return (
     <section
       id="hero"
+      ref={containerRef}
       aria-label="Workshop Introduction"
-      className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-pillai-light"
+      className="relative min-h-screen flex items-center pt-24 overflow-hidden bg-pillai-light"
     >
-      {/* Background mesh */}
+      {/* Dynamic Background Mesh */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-[20%] -right-[10%] w-[60%] h-[70%] rounded-full bg-pillai-primary/5 blur-3xl" />
-        <div className="absolute top-[50%] -left-[10%] w-[40%] h-[50%] rounded-full bg-pillai-accent/10 blur-3xl" />
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, #9E1B23 1px, transparent 0)`,
-          backgroundSize: '32px 32px'
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-[20%] -right-[10%] w-[60%] h-[70%] rounded-full bg-pillai-primary/10 blur-[120px]" 
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.5, 1],
+            rotate: [0, -90, 0],
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute top-[40%] -left-[20%] w-[50%] h-[60%] rounded-full bg-pillai-accent/15 blur-[120px]" 
+        />
+        <div className="absolute inset-0 opacity-[0.04]" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239E1B23' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full py-16 lg:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
           {/* ── Left Content ── */}
           <motion.div
-            initial={{ opacity: 0, y: 32 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col items-start gap-7"
+            style={{ y: y1, opacity }}
+            className="flex flex-col items-start gap-8"
           >
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pillai-primary/10 border border-pillai-primary/20 text-pillai-primary font-bold text-xs tracking-wider uppercase">
-              <Sparkles className="w-4 h-4" />
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-card border border-pillai-primary/20 text-pillai-primary font-bold text-xs tracking-widest uppercase shadow-sm"
+            >
+              <Sparkles className="w-4 h-4 text-pillai-accent animate-pulse" />
               Student AI Foundation Workshop
-            </div>
+            </motion.div>
 
             {/* Headline */}
-            <div>
-              <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-pillai-dark leading-[1.05] tracking-tight">
-                AI Starts <span className="text-pillai-primary">Here.</span>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+            >
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-pillai-dark leading-[1.1] tracking-tight">
+                Unlock Your <br/>
+                <span className="text-gradient">AI Superpowers.</span>
               </h1>
-              <p className="mt-5 text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg">
+              <p className="mt-6 text-lg md:text-xl text-gray-600 leading-relaxed max-w-xl">
                 An immersive one-day workshop designed to take Pillai University students from AI fundamentals to practical Generative AI skills — no technical background required.
               </p>
-            </div>
+            </motion.div>
 
             {/* Stat badges */}
-            <div className="flex flex-wrap gap-3">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="flex flex-wrap gap-3"
+            >
               {badges.map((b, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm font-semibold text-gray-700 bg-white px-4 py-2.5 rounded-xl shadow-sm border border-gray-100">
+                <div key={i} className="flex items-center gap-2 text-sm font-semibold text-gray-700 glass-card px-4 py-2.5 rounded-xl transition-transform hover:scale-105">
                   <span className="text-pillai-primary">{b.icon}</span>
                   {b.text}
                 </div>
               ))}
-            </div>
+            </motion.div>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-4"
+            >
               <a
                 href="#why-ai"
-                aria-label="Explore the Workshop"
-                className="inline-flex justify-center items-center gap-2 bg-pillai-primary hover:bg-pillai-secondary text-white px-8 py-4 rounded-xl text-base font-bold transition-all shadow-xl shadow-pillai-primary/25 hover:shadow-pillai-primary/40 hover:-translate-y-0.5"
+                className="group relative inline-flex justify-center items-center gap-2 bg-pillai-primary text-white px-8 py-4 rounded-2xl text-base font-bold transition-all hover:-translate-y-1 overflow-hidden shadow-xl shadow-pillai-primary/30"
               >
-                Explore the Workshop <ArrowRight className="w-5 h-5" />
+                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-pillai-secondary to-pillai-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="relative z-10 flex items-center gap-2">
+                  Explore the Workshop <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
               </a>
               <a
                 href="#proposal"
-                aria-label="Download Proposal"
-                className="inline-flex justify-center items-center gap-2 bg-white hover:bg-gray-50 text-pillai-dark border border-gray-200 hover:border-pillai-primary/30 px-8 py-4 rounded-xl text-base font-bold transition-all hover:shadow-md"
+                className="inline-flex justify-center items-center gap-2 glass-card hover:bg-white text-pillai-dark px-8 py-4 rounded-2xl text-base font-bold transition-all hover:-translate-y-1 hover:shadow-lg"
               >
                 Download Proposal
               </a>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* ── Right Visual ── */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-            className="relative w-full"
+            className="relative w-full h-full min-h-[500px]"
           >
-            {/* Main card */}
-            <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-pillai-primary via-[#7A1419] to-pillai-dark shadow-2xl border border-white/10 min-h-[440px] flex flex-col items-center justify-center p-10 text-center">
-              {/* dot grid overlay */}
-              <div className="absolute inset-0 opacity-20" style={{
-                backgroundImage: `radial-gradient(circle at 2px 2px, white 1.5px, transparent 0)`,
-                backgroundSize: '28px 28px'
-              }} />
-
+            {/* Main Interactive Card */}
+            <motion.div 
+              whileHover={{ rotateY: 5, rotateX: 5, scale: 1.02 }}
+              className="relative w-full h-full rounded-3xl overflow-hidden bg-gradient-to-br from-pillai-dark via-[#2a080a] to-pillai-primary shadow-2xl border border-white/10 flex flex-col items-center justify-center p-12 text-center transform perspective-1000"
+            >
+              {/* Glass overlay */}
+              <div className="absolute inset-0 glass-panel opacity-50" />
+              
               {/* Spinning decorative rings */}
               <motion.div
                 animate={{ rotate: 360 }}
-                transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-                className="absolute -top-20 -right-20 w-80 h-80 border border-white/10 rounded-full border-dashed"
+                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                className="absolute -top-24 -right-24 w-[400px] h-[400px] border border-white/10 rounded-full border-dashed"
               />
               <motion.div
                 animate={{ rotate: -360 }}
-                transition={{ duration: 70, repeat: Infinity, ease: "linear" }}
-                className="absolute -bottom-24 -left-24 w-96 h-96 border border-white/5 rounded-full"
+                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+                className="absolute -bottom-32 -left-32 w-[500px] h-[500px] border border-white/5 rounded-full"
               />
 
               {/* Content */}
-              <div className="relative z-10 text-white space-y-5">
-                <div className="w-20 h-20 mx-auto rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center">
-                  <Sparkles className="w-10 h-10 text-pillai-accent" />
-                </div>
-                <h2 className="text-2xl md:text-3xl font-extrabold leading-snug">
-                  From Understanding AI<br />to Using AI
+              <div className="relative z-20 text-white space-y-6">
+                <motion.div 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", delay: 0.6 }}
+                  className="w-24 h-24 mx-auto rounded-3xl glass-card-dark flex items-center justify-center border-white/20 shadow-[0_0_40px_rgba(244,197,66,0.15)]"
+                >
+                  <Sparkles className="w-12 h-12 text-pillai-accent animate-pulse-slow" />
+                </motion.div>
+                <h2 className="text-3xl md:text-4xl font-extrabold leading-tight tracking-tight">
+                  From Understanding AI<br />
+                  <span className="text-gradient-gold">to Using AI</span>
                 </h2>
-                <p className="text-white/75 max-w-xs mx-auto text-base leading-relaxed">
+                <p className="text-white/80 max-w-sm mx-auto text-lg leading-relaxed font-medium">
                   Designed for students across all disciplines — Engineering, Business, Architecture &amp; Computer Applications.
                 </p>
 
                 {/* mini journey strip */}
-                <div className="flex flex-wrap justify-center gap-2 pt-2">
-                  {['AI Basics', 'Generative AI', 'Prompting', 'AI Tools', 'Responsible AI'].map(tag => (
-                    <span key={tag} className="text-xs font-semibold px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-white/80">
+                <div className="flex flex-wrap justify-center gap-2 pt-4">
+                  {['AI Basics', 'Generative AI', 'Prompting', 'AI Tools', 'Responsible AI'].map((tag, idx) => (
+                    <motion.span 
+                      key={tag}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 + (idx * 0.1) }}
+                      className="text-xs font-bold tracking-wide px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white backdrop-blur-md"
+                    >
                       {tag}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Floating stats below on mobile, positioned over card on desktop */}
-            <div className="grid grid-cols-4 gap-3 mt-4 lg:absolute lg:-bottom-5 lg:left-6 lg:right-6 lg:mt-0">
-              {floatingStats.map((stat, i) => (
-                <div key={i} className="bg-white rounded-2xl p-3 text-center shadow-lg border border-gray-100">
-                  <div className="text-lg md:text-xl font-extrabold text-pillai-primary">{stat.value}</div>
-                  <div className="text-[10px] md:text-xs text-gray-500 font-semibold leading-tight">{stat.label}</div>
-                </div>
-              ))}
-            </div>
+            {/* Floating Stats */}
+            {floatingStats.map((stat, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1 + stat.delay, type: "spring" }}
+                className={`absolute hidden lg:flex flex-col bg-white rounded-2xl p-4 text-center shadow-2xl border border-gray-100 animate-float z-30`}
+                style={{
+                  top: i === 0 ? '10%' : i === 1 ? '40%' : '75%',
+                  left: i === 0 ? '-10%' : i === 2 ? '15%' : i === 3 ? '60%' : 'auto',
+                  right: i === 1 ? '-15%' : 'auto',
+                  animationDelay: `${i * 1.5}s`
+                }}
+              >
+                <div className="text-2xl font-extrabold text-pillai-primary">{stat.value}</div>
+                <div className="text-xs text-gray-500 font-bold uppercase tracking-wider mt-1">{stat.label}</div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
 
@@ -153,14 +218,15 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
-          className="flex justify-center mt-16 lg:mt-24"
+          transition={{ delay: 1.5 }}
+          className="flex justify-center mt-20"
         >
-          <a href="#why-ai" aria-label="Scroll down" className="flex flex-col items-center gap-1 text-gray-400 hover:text-pillai-primary transition-colors group">
-            <span className="text-xs font-semibold tracking-widest uppercase">Scroll</span>
+          <a href="#why-ai" aria-label="Scroll down" className="flex flex-col items-center gap-2 text-gray-400 hover:text-pillai-primary transition-colors group">
+            <span className="text-xs font-bold tracking-[0.2em] uppercase">Discover</span>
             <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              className="w-10 h-10 rounded-full glass-card flex items-center justify-center group-hover:bg-pillai-primary/10 group-hover:border-pillai-primary/30"
             >
               <ChevronDown className="w-5 h-5" />
             </motion.div>
