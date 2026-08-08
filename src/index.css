@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pillai-primary: #9E1B23;
+  --color-pillai-secondary: #B8202A;
+  --color-pillai-dark: #111827;
+  --color-pillai-light: #FAFAF8;
+  --color-pillai-accent: #F4C542;
+  
+  --font-sans: 'Plus Jakarta Sans', 'Inter', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-pillai-light);
+  color: var(--color-pillai-dark);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  }
+}
